@@ -1,0 +1,8 @@
+* {
+    /* border: 1px solid red; */
+}
+
+.my-accordion-body {
+    max-height: 25rem;
+    overflow: scroll;
+}

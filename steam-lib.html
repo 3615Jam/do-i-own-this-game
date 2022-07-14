@@ -4,15 +4,44 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>### SHINZITAY STEAM LIBRARY ###</title>
-        <!-- <link rel="stylesheet" href="#" /> -->
-        <!-- <link rel="stylesheet" href="#" /> -->
+        <title>### Shinzitay's Games List ###</title>
+        <!-- ----------[ Bootstrap CSS ]---------- -->
+        <link rel="stylesheet" href="../00-utilities/bootstrap-5.1.3-dist/css/bootstrap.min.css" />
+        <!-- ----------[ Jam CSS ]---------- -->
+        <link rel="stylesheet" href="steam-lib-style.css" />
+        <!-- ----------[ Bootstrap JS ]---------- -->
+        <script src="../00-utilities/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+        <!-- ----------[ Jam JS ]---------- -->
         <script src="steam-lib.js" defer></script>
     </head>
+    <header class="m-5 text-center">
+        <h1 class="m-5 text-center">Do I own this game ?</h1>
+        <div><input id="search_bar" type="text" size="50" placeholder="Enter the name of a game ..." onkeyup="searchBarCheck()" /> <button class="btn btn-dark" onclick="resetSearchBar()">RESET</button></div>
+    </header>
     <body>
-        <fieldset>
-            <label>Steam Games List</label>
-            <ul id="game_list"></ul>
-        </fieldset>
+        <div class="accordion" id="all_platforms">
+            <!-- ----------[ STEAM ZONE ]---------- -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="steam_section">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#steam_list" aria-expanded="true" aria-controls="steam_list">STEAM GAMES = <input id="steam_games_counter" readonly disabled /></button>
+                </h3>
+                <div id="steam_list" class="accordion-collapse collapse show" aria-labelledby="steam_section">
+                    <div class="accordion-body my-accordion-body">
+                        <ul id="steam_games_list"></ul>
+                    </div>
+                </div>
+            </div>
+            <!-- ----------[ EPIC ZONE ]---------- -->
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="epic_section">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#epic_list" aria-expanded="true" aria-controls="epic_list">EPIC GAMES = <input id="epic_games_counter" readonly disabled /></button>
+                </h3>
+                <div id="epic_list" class="accordion-collapse collapse show" aria-labelledby="epic_section">
+                    <div class="accordion-body">
+                        <ul id="epic_games_list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
