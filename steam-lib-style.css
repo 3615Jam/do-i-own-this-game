@@ -2,7 +2,43 @@
     /* border: 1px solid red; */
 }
 
+body {
+    background-color: #666;
+}
+
 .my-accordion-body {
     max-height: 25rem;
     overflow: scroll;
+}
+
+/* .vanish-test {
+    opacity: 1;
+    height: auto;
+    transition: opacity 1s linear, height 1s step-start;
+} */
+
+.vanish {
+    display: none;
+    /* opacity: 0; */
+    /* height: 0; */
+    /* overflow: hidden; */
+    /* transition-timing-function: linear, step-end; */
+}
+
+.games-counter {
+    background-color: #000;
+    border-radius: 0.8rem;
+    height: 15rem;
+    width: 15rem;
+    font-size: 4rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.one-match {
+    background-color: green;
+    transition: all 0.3s;
 }

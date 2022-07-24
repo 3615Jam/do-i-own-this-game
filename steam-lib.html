@@ -16,32 +16,75 @@
     </head>
     <header class="m-5 text-center">
         <h1 class="m-5 text-center">Do I own this game ?</h1>
-        <div><input id="search_bar" type="text" size="50" placeholder="Enter the name of a game ..." onkeyup="searchBarCheck()" /> <button class="btn btn-dark" onclick="resetSearchBar()">RESET</button></div>
     </header>
     <body>
-        <div class="accordion" id="all_platforms">
-            <!-- ----------[ STEAM ZONE ]---------- -->
-            <div class="accordion-item">
-                <h3 class="accordion-header" id="steam_section">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#steam_list" aria-expanded="true" aria-controls="steam_list">STEAM GAMES = <input id="steam_games_counter" readonly disabled /></button>
-                </h3>
-                <div id="steam_list" class="accordion-collapse collapse show" aria-labelledby="steam_section">
-                    <div class="accordion-body my-accordion-body">
-                        <ul id="steam_games_list"></ul>
-                    </div>
+        <!-- ----------[ search bar ]---------- -->
+        <section class="d-flex justify-content-center">
+            <div class="m-5 text-center d-flex">
+                <input id="search_bar" class="form-control mx-3" type="text" size="50" placeholder="Search for a game ..." onkeyup="checkSearchBar()" />
+                <button class="btn btn-dark" onclick="resetSearchBar()">RESET</button>
+            </div>
+        </section>
+        <!-- ----------[ platforms selectors + counters ]---------- -->
+        <section class="d-flex justify-content-center m-5">
+            <div id="platform_selector" class="m-5">
+                <div class="my-2">
+                    <button type="button" id="btn_check_all" class="btn btn-dark" onclick="checkAll()">Check all</button>
+                </div>
+                <div class="my-2">
+                    <button type="button" id="btn_uncheck_all" class="btn btn-dark" onclick="uncheckAll()">Uncheck all</button>
                 </div>
             </div>
-            <!-- ----------[ EPIC ZONE ]---------- -->
-            <div class="accordion-item">
-                <h3 class="accordion-header" id="epic_section">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#epic_list" aria-expanded="true" aria-controls="epic_list">EPIC GAMES = <input id="epic_games_counter" readonly disabled /></button>
-                </h3>
-                <div id="epic_list" class="accordion-collapse collapse show" aria-labelledby="epic_section">
-                    <div class="accordion-body">
-                        <ul id="epic_games_list"></ul>
-                    </div>
-                </div>
+            <div id="total_games_container" class="m-5 text-center d-flex flex-column align-items-center">
+                <h2>TOTAL GAMES</h2>
+                <div id="total_games" class="games-counter">0</div>
             </div>
-        </div>
+            <div id="matching_games_container" class="m-5 text-center d-flex flex-column align-items-center">
+                <h2>MATCHING GAMES</h2>
+                <div id="matching_games" class="games-counter">0</div>
+            </div>
+        </section>
+        <!-- ----------[ games lists ]---------- -->
+        <section>
+            <div class="d-flex justify-content-end mx-5">
+                <!-- <button id="btn_toggle_all" class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="">Toggle all</button> -->
+                <!-- <button id="btn_close_all" class="btn btn-dark m-2" onclick="openAll()">⏬</button> -->
+                <button type="button" id="btn_collapse_all" class="btn btn-dark my-2" onclick="collapseAllOrNot()">⏫</button>
+            </div>
+            <div class="accordion mx-5 mb-5" id="all_platforms">
+                <!-- -------------------------- -->
+                <!-- ----------[ V1 ]---------- -->
+                <!-- -------------------------- -->
+                <!-- In V1, each accordion section was manually created. ... -->
+                <!-- ... With V2, all these following accordion items are generated via JS ... -->
+                <!-- ... depending on the number of available games platforms -->
+                <!-- -------------------------- -->
+                <!-- ----------[ STEAM SECTION ]---------- -->
+                <!-- <div class="accordion-item">
+                    <h3 class="accordion-header" id="steam_section">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#steam_list" aria-expanded="true" aria-controls="steam_list">STEAM GAMES<span id="steam_games_counter" class="badge rounded-pill bg-dark mx-3">xxx</span></button>
+                    </h3>
+                    <div id="steam_list" class="accordion-collapse collapse show" aria-labelledby="steam_section">
+                        <div class="accordion-body my-accordion-body">
+                            <ul id="steam_games_list"></ul>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- ----------[ EPIC SECTION ]---------- -->
+                <!-- <div class="accordion-item">
+                    <h3 class="accordion-header" id="epic_section">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#epic_list" aria-expanded="true" aria-controls="epic_list">EPIC GAMES<span id="epic_games_counter" class="badge rounded-pill bg-dark mx-3">xxx</span></button>
+                    </h3>
+                    <div id="epic_list" class="accordion-collapse collapse show" aria-labelledby="epic_section">
+                        <div class="accordion-body">
+                            <ul id="epic_games_list"></ul>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- -------------------------- -->
+                <!-- -------------------------- -->
+                <!-- -------------------------- -->
+            </div>
+        </section>
     </body>
 </html>
