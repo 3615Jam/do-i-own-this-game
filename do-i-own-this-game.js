@@ -73,11 +73,11 @@ let matchingGamesCounter = 0;
 
 gamesPlatforms.forEach((platform) => {
     // sélecteurs de plateformes
-    let htmlPlatformSelector = '<div id="' + platform + '_checkbox_container" class="form-check"><input type="checkbox" class="form-check-input platform" id="' + platform + '_checkbox" checked /><label class="form-check-label" for="' + platform + '_checkbox">' + platform + ' (<span id="' + platform + '_checkbox_games_counter" class="checkbox_games_counter">xxx</span>)</label></div>';
+    let htmlPlatformSelector = '<div id="' + platform + '_checkbox_container" class="form-check"><input type="checkbox" class="form-check-input platform" id="' + platform + '_checkbox" checked /><label class="form-check-label" for="' + platform + '_checkbox">' + platform + ' (<span id="' + platform + '_checkbox_games_counter" class="checkbox_games_counter">0</span>)</label></div>';
     document.getElementById("platform_selector").innerHTML += htmlPlatformSelector;
 
     // listes des jeux par plateformes
-    let htmlGamesList = "<!-- ----------[ " + platform + ' SECTION ]---------- --><div id="' + platform + '_section" class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + platform + '_list" aria-expanded="true" aria-controls="' + platform + '_list">' + platform + '<span id="' + platform + '_list_games_counter" class="list_games_counter badge rounded-pill bg-dark mx-3">xxx</span></button></h3><div id="' + platform + '_list" class="accordion-collapse collapse multi-collapse show" aria-labelledby="' + platform + '_section"><div class="accordion-body my-accordion-body"><ul id="' + platform + '_games_list"></ul></div></div></div>';
+    let htmlGamesList = "<!-- ----------[ " + platform + ' SECTION ]---------- --><div id="' + platform + '_section" class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#' + platform + '_list" aria-expanded="true" aria-controls="' + platform + '_list">' + platform + '<span id="' + platform + '_list_games_counter" class="list_games_counter badge rounded-pill bg-dark mx-3">0</span></button></h3><div id="' + platform + '_list" class="accordion-collapse collapse multi-collapse show" aria-labelledby="' + platform + '_section"><div class="accordion-body my-accordion-body"><ul id="' + platform + '_games_list"></ul></div></div></div>';
     document.getElementById("all_platforms").innerHTML += htmlGamesList;
 });
 
@@ -116,11 +116,53 @@ function updatePlatformVisibility(event) {
     // ... on remplace donc "checkbox" par "section" dans l'id récupéré
     let platformSectionId = platformCheckboxId.replace("checkbox", "section");
     // verif
-    // console.log(platformSectionId);
+    // console.log(platformSectionId); // = "<platform>_section"
     // on récupère la div '<platform>_section' correspondante ...
     const platformSection = document.getElementById(platformSectionId);
     // ... et on lui ajoute (ou retire) la classe "vanish"
-    platformSection.classList.toggle("vanish");
+    // platformSection.classList.toggle("vanish");
+
+    // ===========================================================================
+    // [i] ligne précédente :
+    // au début, on utilisait "toggle" en partant du principe que la checkbox est cochée par défaut au chargement de la page.
+    // mais si ce comportement est amené à changer, on a finalement décidé de clarifier ce comportement avec un if/else :
+    // 'if (!checkbox.checked) —> classList.add("vanish")' / 'else —> classList.remove("vanish")'
+    // ===========================================================================
+
+    // on retire le list_counter du total_counter
+
+    // let checkedPlatformName = platformCheckboxId.replace("_checkbox", "");
+    // console.log(checkedPlatformName);
+    let checkedPlatformCheckbox = document.getElementById(platformCheckboxId);
+    // console.log(checkedPlatformCheckbox);
+    let checkedPlatformCounter = document.getElementById(platformCheckboxId + "_games_counter");
+    // console.log(checkedPlatformCounter);
+    // console.log(checkedPlatformCounter.innerText);
+    // let checkedPlatformCounterValue = checkedPlatformCounter.textContent;
+
+    // --------------------
+
+    // console.log(checkedPlatformCheckbox);
+    // let result = Number(matchingGamesCounterElement.textContent) - Number(checkedPlatformCounter.textContent);
+    // console.log("result AVANT : " + result);
+    // result < 0 ? (result = "0") : result;
+    // console.log("result APRES : " + result);
+
+    if (!checkedPlatformCheckbox.checked) {
+        totalGamesCounterElement.textContent = Number(totalGamesCounterElement.textContent) - Number(checkedPlatformCounter.textContent);
+        // let result = Number(matchingGamesCounterElement.textContent) - Number(checkedPlatformCounter.textContent);
+        // result < 0 ? (result = "0") : result;
+        // matchingGamesCounterElement.textContent = result;
+        platformSection.classList.add("vanish");
+        checkSearchBar();
+        // console.log("-> if");
+    } else {
+        totalGamesCounterElement.textContent = Number(totalGamesCounterElement.textContent) + Number(checkedPlatformCounter.textContent);
+        // matchingGamesCounterElement.textContent = Number(matchingGamesCounterElement.textContent) + Number(checkedPlatformCounter.textContent);
+        platformSection.classList.remove("vanish");
+        checkSearchBar();
+        // console.log("-> else");
+    }
 }
 
 function checkAll() {
@@ -209,7 +251,7 @@ function collapseAllOrNot() {
  */
 
 function fetchGamesPlatforms(platform) {
-    let dataToFetch = platform + "-data-to-fetch.json";
+    let dataToFetch = "library-" + platform + ".json";
     fetch(dataToFetch)
         .then(function (response) {
             if (response.ok) {
@@ -236,7 +278,7 @@ function fetchGamesPlatforms(platform) {
             const listGamesCounter = document.getElementById(platform + "_list_games_counter");
             // ... et on le met à jour avec le nb de jeux
             listGamesCounter.textContent = gamesCounter;
-            // enfin, on ajoute pour mettre à jour le compteur global
+            // enfin, on incrément le compteur global avec le compteur de plateforme
             totalGamesCounter += gamesCounter;
             totalGamesCounterElement.textContent = totalGamesCounter;
             // la liste de jeux retournée n'est pas classée par ordre alphabétique (mais par ID de jeu) ...
@@ -254,6 +296,7 @@ function fetchGamesPlatforms(platform) {
                 let individualGame = document.createElement("li");
                 individualGame.textContent = gameName;
                 individualGame.className = platform + "_individual_game";
+                individualGame.classList.add("individual_game");
                 document.getElementById(platform + "_games_list").appendChild(individualGame);
             });
         })
@@ -284,131 +327,70 @@ gamesPlatforms.forEach((platform) => {
  * ===========================================================================
  */
 
-// function checkSearchBar() {
-//     // on crée 2 compteurs : le premier pour mettre à jour le compteur de jeux total (toutes plateformes confondues) ...
-//     // ... le second pour compter le nb de jeux correspondants au fur et à mesure des caractères saisis
-//     let updatedMatchingGamesCounter = 0;
-//     let individualPlatformGamesCounter = 0;
-//     // on récupère la valeur du caractère saisi
-//     let searchString = searchBarElement.value;
-//     // on passe tout en minuscule
-//     searchString = searchString.toLowerCase();
-//     // si la barre de recherche est vidée (suppression des caractères saisis via la touche 'retour' du clavier),
-//     // le compteur de jeux correspondants est remis à zéro
-//     if (searchString == "") {
-//         matchingGamesCounterElement.textContent = 0;
-//         Array.from(individualGameList).forEach((game) => {
-//             game.style.display = "list-item";
-//         });
-//         gamesPlatforms.forEach((platform) => {
-//             // on récupère le compteur de la checkbox de chaque plateforme
-//             const checkboxGamesCounter = document.getElementById(platform + "_checkbox_games_counter");
-//             // on récupère le compteur de la liste de chaque plateforme
-//             const platformListGamesCounter = document.getElementById(platform + "_list_games_counter");
-//             // on met à jour le compteur de liste avec le compteur de checkbox
-//             platformListGamesCounter.textContent = checkboxGamesCounter.textContent;
-//             // individualGameListByPlatform[i].style.display = "list-item";
-//         });
-//     } else {
-//         // sinon, pour chaque plateforme, on vérifie les correspondances entre le caractère saisi et les jeux de la liste
-//         gamesPlatforms.forEach((platform) => {
-//             // récupération de la liste des jeux de la plateforme en question
-//             const individualGameListByPlatform = document.getElementsByClassName(platform + "_individual_game");
-//             // récupération du compteur de jeux de chaque plateforme
-//             const platformListGamesCounter = document.getElementById(platform + "_list_games_counter");
-//             // on boucle sur la liste de jeux de la plateforme en question
-//             Array.from(individualGameListByPlatform).forEach((game) => {
-//                 if (!game.innerHTML.toLowerCase().includes(searchString)) {
-//                     game.style.display = "none";
-//                     // console.log("correspond ;)");
-//                 } else {
-//                     // console.log("correspond PAS");
-//                     // sinon on ajoute un "display = list-item" au <li> du jeu en question
-//                     game.style.display = "list-item";
-//                     // on incrémente le compteur de jeux de la plateforme en question
-//                     individualPlatformGamesCounter++;
-//                     // et on incrémente le compteur global de jeux correspondants
-//                     updatedMatchingGamesCounter++;
-//                 }
-//             });
-
-//             // for (i = 0; i < individualGameListByPlatform.length; i++) {
-//             //     // si on ne trouve pas de correspondance ...
-//             //     if (!individualGameListByPlatform[i].innerHTML.toLowerCase().includes(searchString)) {
-//             //         // ... on ajoute un "display = none" au <li> du jeu en question
-//             //         individualGameListByPlatform[i].style.display = "none";
-//             //     } else {
-//             //         // sinon on ajoute un "display = list-item" au <li> du jeu en question
-//             //         individualGameListByPlatform[i].style.display = "list-item";
-//             //         // on incrémente le compteur de jeux de la plateforme en question
-//             //         individualPlatformGamesCounter++;
-//             //         // et on incrémente le compteur global de jeux correspondants
-//             //         updatedMatchingGamesCounter++;
-//             //     }
-//             // }
-
-//             // on met à jour le compteur de jeux de la plateforme en question
-//             platformListGamesCounter.textContent = individualPlatformGamesCounter;
-//             // puis on le remet à zéro pour recompter les jeux de la plateforme suivante
-//             individualPlatformGamesCounter = 0;
-//         });
-//     }
-//     // puis on met à jour le compteur de jeux correspondants
-//     matchingGamesCounterElement.textContent = updatedMatchingGamesCounter;
-//     // et on passe le background du compteur en vert si 1 seul jeu correspond (en lui ajoutant la propriété "one-match")
-//     // if (updatedMatchingGamesCounter === 1) {
-//     //     matchingGamesCounterElement.classList.add("one-match");
-//     // } else {
-//     //     matchingGamesCounterElement.classList.remove("one-match");
-//     // }
-//     // }
-// }
-
-//            ######        ###            #########
-//           ########       ###            ###########
-//          ###    ###      ###            ###       ###
-//         ###      ###     ###            ###        ###
-//        ###        ###    ###            ###         ###
-//       ###          ###   ###            ###          ###
-//       ###          ###   ###            ###          ###
-//       ###          ###   ###            ###          ###
-//        ###        ###    ###            ###         ###
-//         ###      ###     ###            ###        ###
-//          ###    ###      ###            ###       ###
-//           ########       ############   ###########
-//            ######        ############   #########
-
 function checkSearchBar() {
-    // on crée un second compteur qui s'incrémentera avec le nb de jeu(x) affiché(s) ...
-    // ... au fur et à mesure des caractères entrés
-    let updatedGamesCounter = 0;
-    // on récupère la valeur du caractère entré
+    // on crée 2 compteurs : le premier pour mettre à jour le compteur de jeux total (toutes plateformes confondues) ...
+    // ... le second pour compter le nb de jeux correspondants au fur et à mesure des caractères saisis
+    let updatedMatchingGamesCounter = 0;
+    let updatedListGamesCounter = 0;
+    // on récupère la valeur du caractère saisi
     let searchString = searchBarElement.value;
     // on passe tout en minuscule
     searchString = searchString.toLowerCase();
-    // on boucle sur la liste des jeux pour comparer les caractères entrés avec le nom des jeux
-    for (i = 0; i < individualGameList.length; i++) {
-        console.log("for");
-        if (!individualGameList[i].innerHTML.toLowerCase().includes(searchString)) {
-            // quand on ne trouve pas de correspondance, on ajoute un "display = none" au <li> du jeu en question
-            individualGameList[i].style.display = "none";
-            console.log("if");
-        } else {
-            // sinon on ajoute un "display = list-item" au <li> du jeu en question
-            individualGameList[i].style.display = "list-item";
-            // et on incrémente le second compteur (= le nb de jeu(x) correspondant(s) à la recherche)
-            updatedGamesCounter++;
-            console.log("else");
-        }
+    // si la barre de recherche est vidée (suppression des caractères saisis via la touche 'retour' du clavier),
+    // on re-affiche la liste complète de jeux pour toutes les plateformes
+    if (searchString == "") {
+        Array.from(individualGameList).forEach((game) => {
+            game.style.display = "list-item";
+        });
+        gamesPlatforms.forEach((platform) => {
+            // on récupère le compteur de la checkbox de chaque plateforme
+            const checkboxGamesCounter = document.getElementById(platform + "_checkbox_games_counter");
+            // on récupère le compteur de la liste de chaque plateforme
+            const platformListGamesCounter = document.getElementById(platform + "_list_games_counter");
+            // on met à jour le compteur de liste avec le compteur de checkbox
+            platformListGamesCounter.textContent = checkboxGamesCounter.textContent;
+            // individualGameListByPlatform[i].style.display = "list-item";
+        });
+    } else {
+        // sinon, pour chaque plateforme, on vérifie les correspondances entre le caractère saisi et les jeux de la liste des plateformes visibles (checkbox cochée √)
+        gamesPlatforms.forEach((platform) => {
+            const platformSection = document.getElementById(platform + "_section");
+            // récupération du compteur de jeux de chaque plateforme
+            const platformListGamesCounter = document.getElementById(platform + "_list_games_counter");
+            // on ne récupère que la liste des jeux des plateformes visibles (checkbox cochée √)
+            if (!platformSection.classList.contains("vanish")) {
+                // récupération de la liste des jeux de la plateforme en question
+                const individualGameListByPlatform = document.getElementsByClassName(platform + "_individual_game");
+                // on boucle sur la liste de jeux de la plateforme en question
+                Array.from(individualGameListByPlatform).forEach((game) => {
+                    if (!game.innerHTML.toLowerCase().includes(searchString)) {
+                        game.style.display = "none";
+                        // console.log("correspond ;)");
+                    } else {
+                        // console.log("correspond PAS");
+                        // sinon on ajoute un "display = list-item" au <li> du jeu en question
+                        game.style.display = "list-item";
+                        // on incrémente le compteur de jeux de la plateforme en question
+                        updatedListGamesCounter++;
+                        // et on incrémente le compteur global de jeux correspondants
+                        updatedMatchingGamesCounter++;
+                    }
+                });
+            }
+            // on met à jour le compteur de jeux de la plateforme en question
+            platformListGamesCounter.textContent = updatedListGamesCounter;
+            // puis on le remet à zéro pour recompter les jeux de la plateforme suivante
+            updatedListGamesCounter = 0;
+        });
     }
     // puis on met à jour le compteur de jeux correspondants
-    console.log(updatedGamesCounter);
-    matchingGamesCounterElement.textContent = updatedGamesCounter;
-    // puis on met à jour le compteur de chaque liste séparément
-    gamesPlatforms.forEach((platform) => {
-        let platformListGamesCounter = document.getElementById(platform + "_list_games_counter");
-        platformListGamesCounter.textContent = updatedGamesCounter;
-    });
+    matchingGamesCounterElement.textContent = updatedMatchingGamesCounter;
+    // et on passe le background du compteur en vert si 1 seul jeu correspond (en lui ajoutant la propriété "one-match")
+    if (updatedMatchingGamesCounter === 1) {
+        matchingGamesCounterElement.classList.add("one-match");
+    } else {
+        matchingGamesCounterElement.classList.remove("one-match");
+    }
 }
 
 // ###########################################################################
