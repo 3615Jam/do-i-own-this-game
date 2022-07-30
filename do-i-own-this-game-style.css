@@ -42,3 +42,7 @@ body {
     background-color: green;
     transition: all 0.3s;
 }
+
+.my_row {
+    flex: auto;
+}
