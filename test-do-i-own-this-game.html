@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>### DO I OWN THIS GAME ? ###</title>
+        <title>### (test) DIOTG ###</title>
         <!-- ----------[ Bootstrap CSS ]---------- -->
         <link rel="stylesheet" href="../00-utilities/bootstrap/bootstrap-5.1.3-dist/css/bootstrap.min.css" />
 
@@ -23,6 +23,7 @@
     <body class="row">
         <section class="col">
             <h1 class="m-5 text-center">Do I own this game ?</h1>
+
             <!-- ----------[ search bar ]---------- -->
             <section class="m-5">
                 <div class="text-center d-flex justify-content-between">
@@ -30,64 +31,119 @@
                     <button class="btn btn-dark ms-3" onclick="resetSearchBar()">RESET</button>
                 </div>
             </section>
-            <!-- ----------[ games lists ]---------- -->
-            <section>
-                <div class="accordion mx-5 mb-5" id="all_platforms">
-                    <!-- ----------[ header section ]---------- -->
-                    <div id="header_section" class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button id="btn_collapse_all" onclick="collapseAllOrNot()" class="accordion-button" type="button">
-                                <!-- ----------[ V1 - text only ]---------- -->
-                                <!-- === header ===<span id="header_list_games_counter" class="list_games_counter badge rounded-pill bg-dark mx-3">0</span> -->
-                                <!-- ----------[ V2 - table style ]---------- -->
-                                <!-- <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Platform</th>
-                                            <th scope="col">Total games</th>
-                                            <th scope="col">Matching games</th>
-                                        </tr>
-                                    </thead>
-                                </table> -->
-                                <!-- ----------[ V3 - div style ]---------- -->
-                                <div class="row my_row">
-                                    <div class="col">Visibility</div>
-                                    <div class="col">Platform</div>
-                                    <div class="col">Total Games</div>
-                                    <div class="col">Matching Games</div>
-                                </div>
-                            </button>
-                        </h3>
-                        <div class="accordion-body my-accordion-body">
-                            <div class="row my_row">
-                                <div class="col"><input type="checkbox" /></div>
-                                <div class="col">Platform</div>
-                                <div class="col"><span id="" class="list_games_counter badge rounded-pill bg-dark mx-3">0</span></div>
-                                <div class="col"><span id="" class="list_games_counter badge rounded-pill bg-dark mx-3">0</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </section>
-        <!-- ----------[ platforms selectors + counters ]---------- -->
-        <section class="d-flex justify-content-center m-5 col">
-            <div id="platform_selector" class="m-5">
+
+            <!-- ----------[ platforms selectors + counters ]---------- -->
+            <section class="d-flex justify-content-evenly m-5 col">
+                <!-- <div id="platform_selector" class="m-5">
                 <div class="my-2">
                     <button type="button" id="btn_check_all" class="btn btn-dark" onclick="checkAll()">Check all</button>
                 </div>
                 <div class="my-2">
                     <button type="button" id="btn_uncheck_all" class="btn btn-dark" onclick="uncheckAll()">Uncheck all</button>
                 </div>
-            </div>
-            <div id="total_games_container" class="m-5 text-center d-flex flex-column align-items-center">
-                <h2>TOTAL GAMES</h2>
-                <div id="total_games" class="games-counter">0</div>
-            </div>
-            <div id="matching_games_container" class="m-5 text-center d-flex flex-column align-items-center">
-                <h2>MATCHING GAMES</h2>
-                <div id="matching_games" class="games-counter">0</div>
-            </div>
+            </div> -->
+                <div id="total_games_container" class="text-center d-flex flex-column align-items-center">
+                    <h2>TOTAL GAMES</h2>
+                    <div id="global_total_counter" class="games-counter bg-dark">0</div>
+                </div>
+                <div id="matching_games_container" class="text-center d-flex flex-column align-items-center">
+                    <h2>MATCHING GAMES</h2>
+                    <div id="global_matching_counter" class="games-counter bg-dark">0</div>
+                </div>
+            </section>
+
+            <!-- ----------[ games lists ]---------- -->
+            <section>
+                <!-- ----------[ V1 - accordion style ]---------- -->
+                <div class="accordion mx-5 mb-5" id="all_platforms">
+                    <div id="header_section" class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fake-div" aria-expanded="true" aria-controls="#fake-div" onclick="collapseAllOrNot()">
+                                <div class="row my_row">
+                                    <!-- <div class="col-2 text-center"><input type="checkbox" /></div> -->
+                                    <!-- <div class="col-8">Platform<span id="" class="badge rounded-pill bg-dark mx-3">Total Games</span></div> -->
+                                    <div class="col-8">Platform (Total Games)</div>
+                                    <!-- <div class="col-2 text-center">Total Games</div> -->
+                                    <div class="col-2 text-center"><span id="" class="badge rounded-pill bg-dark mx-3">Matching Games</span></div>
+                                    <div class="show" id="fake-div"></div>
+                                </div>
+                            </button>
+                            <!-- <button id="btn_collapse_all" class="accordion-button">
+                                <div class="row my_row">
+                                    <div class="col-2 text-center">Visibility</div>
+                                    <div class="col-2 text-center">Total Games</div>
+                                    <div class="col-4">Platform</div>
+                                    <div class="col-2 text-center">Matching Games</div>
+                                    <div class="col-1 text-center" onclick="collapseAllOrNot()">⏫</div>
+                                </div>
+                            </button> -->
+                        </h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ----------[ V2 - table style ]---------- -->
+            <!-- <section class="m-5">
+                <table class="table text-center accordion">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col" class="col-2">Visibility</th>
+                            <th scope="col" class="col-4 text-start">Platform</th>
+                            <th scope="col" class="col-2">Total Games</th>
+                            <th scope="col" class="col-2">Matching Games</th>
+                            <th scope="col" class="col-2">Hide / Show</th>
+                        </tr>
+                        <tr>
+                            <th scope="row"><input type="checkbox" /></th>
+                            <td></td>
+                            <td><span id="global_total_counter_" class="badge rounded-pill bg-dark mx-3">0</span></td>
+                            <td><span id="global_matching_counter_" class="badge rounded-pill bg-dark mx-3">0</span></td>
+                            <td>⏫</td>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body" class="accordion-item"> -->
+            <!-- the body of this table will be dynamically fed thanks to JS -->
+            <!-- test  -->
+            <!-- <tr class="table-secondary accordion-header">
+                            <th scope="row"><input type="checkbox" /></th>
+                            <td>
+                                <div class="accordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">TEST</button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <ul>
+                                                    <li>test 1</li>
+                                                    <li>test 2</li>
+                                                    <li>test 3</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span id="" class="badge rounded-pill bg-dark mx-3">0</span></td>
+                            <td><span id="" class="badge rounded-pill bg-dark mx-3">0</span></td>
+                            <td><button type="button" onclick="testCollapseTableRow()">⏫</button></td>
+                        </tr>
+                        <tr id="test_to_hide" class="table-light accordion-body accordion-collapse multi-collapse collapse show">
+                            <th></th>
+                            <td colspan="">
+                                <ul>
+                                    <li>test 1</li>
+                                    <li>test 2</li>
+                                    <li>test 3</li>
+                                </ul>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section> -->
         </section>
     </body>
 </html>

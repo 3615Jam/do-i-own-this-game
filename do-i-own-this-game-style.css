@@ -26,10 +26,10 @@ body {
 }
 
 .games-counter {
-    background-color: #000;
+    /* background-color: #000; */
     border-radius: 0.8rem;
-    height: 15rem;
-    width: 15rem;
+    height: 12rem;
+    width: 12rem;
     font-size: 4rem;
     color: #fff;
     display: flex;
@@ -39,10 +39,20 @@ body {
 }
 
 .one-match {
-    background-color: green;
+    /* background-color: green; */
     transition: all 0.3s;
 }
 
 .my_row {
     flex: auto;
+}
+
+/* #btn_collapse_all:after {
+    content: none;
+} */
+
+.my_flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
