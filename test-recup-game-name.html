@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="test-recup-game-name.js" defer></script>
+    </head>
+    <body>
+        <fieldset>
+            <legend>Liste fictive de jeux</legend>
+            <ul>
+                <li><span class="product-title__text">Jeu 1</span></li>
+                <li><span class="product-title__text">Jeu 2</span></li>
+                <li><span class="product-title__text">Jeu 3</span></li>
+            </ul>
+            <button onclick="exportGamesList()">Exporter ma liste de jeux</button>
+        </fieldset>
+        <br />
+
+        <br />
+        <fieldset>
+            <legend>DIOTG liste importée</legend>
+            <div>
+                <button onclick="importGamesList()">Importer ma liste de jeux</button>
+                <p id="before_import">Pour l'instant, il n'y a rien...</p>
+                <ul id="imported_games_list"></ul>
+            </div>
+        </fieldset>
+    </body>
+</html>
